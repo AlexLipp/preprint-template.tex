@@ -1,40 +1,63 @@
-%% arara directives
-% arara: xelatex
-% arara: bibtex
-% arara: xelatex
-% arara: xelatex
-
 %\documentclass{article} % One-column default
 \documentclass[twocolumn, switch]{article} % Method A for two-column formatting
 
 \usepackage{preprint}
 
+\usepackage{caption}
+\usepackage{xcolor}
+
+\RequirePackage{rotating}
+\newif\ifturnofflinenums
+\let\savesidewaystable\sidewaystable
+\let\savesidewaysfigure\sidewaysfigure
+%% turns off line numbers in rotated tables and figures, aesthetic consideration,
+%% not necessary.
+\def\sidewaystable{\turnofflinenumstrue\savesidewaystable\centering}
+\def\sidewaysfigure{\turnofflinenumstrue\savesidewaysfigure\centering}
+
+\usepackage{threeparttable}
+
 %% Math packages
 \usepackage{amsmath, amsthm, amssymb, amsfonts}
 
+\usepackage[version=4]{mhchem}
 %% Bibliography options
-\usepackage[numbers,square]{natbib}
-\bibliographystyle{unsrtnat}
-%\usepackage{natbib}
-%\bibliographystyle{Geology}
+\usepackage[style=authoryear-comp,maxcitenames=1,uniquename=false,giveninits=true,uniquelist=false,maxbibnames=99,sortcites=true,sorting=ynt,doi=true,isbn=false,url=false,hyperref=true,date=year]{biblatex}
+% Removes default behaviour s.t. Articles do not include "in" within bibliography
+\renewbibmacro{in:}{
+  \ifboolexpr{%
+     test {\ifentrytype{article}}%
+     or 
+     test {\ifentrytype{inproceedings}}%
+  }{}{\printtext{\bibstring{in}\intitlepunct}}%
+}
+% Removes language field
+\AtEveryBibitem{%
+  \clearlist{language}%
+}
+\AtEveryBibitem{%
+  \clearfield{note}%
+}
+\addbibresource{references.bib}
 
 %% General packages
 \usepackage[utf8]{inputenc}	% allow utf-8 input
 \usepackage[T1]{fontenc}	% use 8-bit T1 fonts
 \usepackage{xcolor}		% colors for hyperlinks
 \usepackage[colorlinks = true,
-            linkcolor = purple,
+            linkcolor = .,
             urlcolor  = blue,
-            citecolor = cyan,
+            citecolor = .,
             anchorcolor = black]{hyperref}	% Color links to references, figures, etc.
 \usepackage{booktabs} 		% professional-quality tables
 \usepackage{nicefrac}		% compact symbols for 1/2, etc.
 \usepackage{microtype}		% microtypography
 \usepackage{lineno}		% Line numbers
 \usepackage{float}			% Allows for figures within multicol
-%\usepackage{multicol}		% Multiple columns (Method B)
-
+\usepackage{mhchem}         % For chemical formula
 \usepackage{lipsum}		%  Filler text
+\usepackage{graphicx}
+\usepackage{url}
 
  %% Special figure caption options
 \usepackage{newfloat}
@@ -42,56 +65,33 @@
 \usepackage{sidecap}
 \sidecaptionvpos{figure}{c}
 
+
 % Section title spacing  options
 \usepackage{titlesec}
 \titlespacing\section{0pt}{12pt plus 3pt minus 3pt}{1pt plus 1pt minus 1pt}
 \titlespacing\subsection{0pt}{10pt plus 3pt minus 3pt}{1pt plus 1pt minus 1pt}
 \titlespacing\subsubsection{0pt}{8pt plus 3pt minus 3pt}{1pt plus 1pt minus 1pt}
 
-
 %%%%%%%%%%%%%%%%   Title   %%%%%%%%%%%%%%%%
-\title{A preprint template for LaTeX users}
+
+\title{A Very Interesting Discovery}
 
 % Add watermark with submission status
 \usepackage{xwatermark}
 % Left watermark
-\newwatermark[firstpage,color=gray!60,angle=90,scale=0.32, xpos=-4.05in,ypos=0]{\href{https://doi.org/}{\color{gray}{Publication doi}}}
+\newwatermark[firstpage,color=gray!60,angle=90,scale=0.32, xpos=-4.05in,ypos=0]{\href{published-url}{{\color{gray}{Manuscript submitted for publication in \textit{Highly Prestigious Journal}. Published DOI: XXXXXXXXXXXXXXXXX }}}}
 % Right watermark
-\newwatermark[firstpage,color=gray!60,angle=90,scale=0.32, xpos=3.9in,ypos=0]{\href{https://doi.org/}{\color{gray}{Preprint doi}}}
+\newwatermark[firstpage,color=gray!60,angle=90,scale=0.32, xpos=3.9in,ypos=0]{\href{preprint-url}{\color{gray}{Preprint doi: YYYYYYYYYYYYYYYYYY}}}
 % Bottom watermark
-\newwatermark[firstpage,color=gray!90,angle=0,scale=0.28, xpos=0in,ypos=-5in]{*correspondence: \texttt{email@institution.edu}}
+\newwatermark[firstpage,color=gray!90,angle=0,scale=0.28, xpos=0in,ypos=-5in]{*correspondence: \texttt{a.lipp18@imperial.ac.uk}}
 
 %%%%%%%%%%%%%%%  Author list  %%%%%%%%%%%%%%%
 \usepackage{authblk}
 \renewcommand*{\Authfont}{\bfseries}
-\author[1\thanks{\tt{asmith@college.edu}}]{Alice Smith}
-\author[2]{Bob Jones}
-\affil[1]{Department of Mathematics, University X}
-\affil[2]{Department of Biology, University Y}
-
-% Option 2 for author list
-%\author{
-%  David S.~Hippocampus\thanks{Use footnote for providing further
-%    information about author (webpage, alternative
-%    address)---\emph{not} for acknowledging funding agencies.} \\
-%  Department of Computer Science\\
-%  Cranberry-Lemon University\\
-%  Pittsburgh, PA 15213 \\
-%  \texttt{hippo@cs.cranberry-lemon.edu} \\
-%  %% examples of more authors
-%   \And
-% Elias D.~Striatum \\
-%  Department of Electrical Engineering\\
-%  Mount-Sheikh University\\
-%  Santa Narimana, Levand \\
-%  \texttt{stariate@ee.mount-sheikh.edu} \\
-%  \AND
-%  Coauthor \\
-%  Affiliation \\
-%  Address \\
-%  \texttt{email} \\
-%  % etc.
-%}
+\author[1\thanks{\tt{a.lipp18@imperial.ac.uk}}]{Alex G. Lipp}
+\author[2]{C. O. Llaborator}
+\affil[1]{Department of Earth Sciences and Engineering, Imperial College London, UK}
+\affil[2]{Centre for Environmental Geochemistry, British Geological Survey, Keyworth, UK}
 
 %%%%%%%%%%%%%%    Front matter    %%%%%%%%%%%%%%
 \begin{document}
@@ -102,80 +102,69 @@
 \maketitle
 
 \begin{abstract}
+
 Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum. Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. 
+
+
 \end{abstract}
-%\keywords{First keyword \and Second keyword \and More} % (optional)
+
+\vspace{5mm}
+
+\begin{plainlang}
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum. Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. 
+
+
+\end{plainlang}
+\keywords{Science \and Data \and Fascinating Results} % (optional)
 \vspace{0.35cm}
 
   \end{@twocolumnfalse} % Method A for two-column formatting
 ] % Method A for two-column formatting
 
-%\begin{multicols}{2} % Method B for two-column formatting (doesn't play well with line numbers), comment out if using method A
-
 
 %%%%%%%%%%%%%%%  Main text   %%%%%%%%%%%%%%%
-% \linenumbers
 
 \section{Introduction}
-\lipsum[2]
-\lipsum[3]
 
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum. Aenean faucibus. Morbi dolor nulla, malesuada eu, pulvinar at, mollis ac, nulla. Curabitur auctor semper nulla. Donec varius orci eget risus. Duis nibh mi, congue eu, accumsan eleifend, sagittis quis, diam. Duis eget orci sit amet orci dignissim rutrum. Nam dui ligula, fringilla a, euismod sodales, sollicitudin vel, wisi. Morbi auctor lorem non justo. 
 
-\section{Headings: first level}
-\label{sec:headings}
+\section{Figures} 
 
-\lipsum[7] See Section \ref{sec:headings}.
+Figure \ref{fig:fig1} is a small photo of a duck which fits inside one column. Figure \ref{fig:fig2} is a large duck. A supplementary duck can be found in Figure S\ref{fig:SI_1}. 
 
-\subsection{Headings: second level}
-\lipsum[5]
-\begin{equation}
-\xi _{ij}(t)= {\frac {\alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}{\sum _{i=1}^{N} \sum _{j=1}^{N} \alpha _{i}(t)a^{w_t}_{ij}\beta _{j}(t+1)b^{v_{t+1}}_{j}(y_{t+1})}}
-\end{equation}
-
-\subsubsection{Headings: third level}
-\lipsum[6]
-
-\paragraph{Paragraph}
-\lipsum[7]
-
-\section{Examples of citations, figures, tables, references}
-\label{sec:others}
-\lipsum[8] \cite{kour2014real,kour2014fast} and see \cite{hadash2018estimate}.
-
-The documentation for \verb+natbib+ may be found at
-\begin{center}
-  \url{http://mirrors.ctan.org/macros/latex/contrib/natbib/natnotes.pdf}
-\end{center}
-Of note is the command \verb+\citet+, which produces citations
-appropriate for use in inline text.  For example,
-\begin{verbatim}
-   \citet{hasselmo} investigated\dots
-\end{verbatim}
-produces
-\begin{quote}
-  Hasselmo, et al.\ (1995) investigated\dots
-\end{quote}
-
-\begin{center}
-  \url{https://www.ctan.org/pkg/booktabs}
-\end{center}
-
-
-\subsection{Figures}
-\lipsum[10] 
-See Figure \ref{fig:fig1}. Here is how you add footnotes. %\footnote{Sample of the first footnote.}
-\lipsum[11] 
-
-\begin{figure}[H]
+\begin{figure}
   \centering
-  \fbox{\rule[-.5cm]{4cm}{4cm} \rule[-.5cm]{4cm}{0cm}}
-  \caption{Sample figure caption.}
+  \includegraphics[scale=0.1]{duck1.jpg}
+  \caption{This is a duck.}
   \label{fig:fig1}
 \end{figure}
 
-\subsection{Tables}
-\lipsum[12]
-See awesome Table \ref{tab:table}.
+\begin{figure*}[t]
+  \centering
+  \includegraphics[scale=0.2]{goose.jpg}
+  \caption{This is a large duck.}
+  \label{fig:fig2}
+\end{figure*}
+
+\subsection{A subsection}
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum.
+
+\subsubsection{How to do citations}
+
+We used the fantastic data analytic methods of \textcite{aitchison_statistical_1986}. These methods are widely used in the community \autocite{von_eynatten_sediment_2016}. We also read some studies about rivers (e.g. \cite{roberts_estimating_2010}). 
+
+\section{Maths and Tables}
+
+This is a very important equation about rivers: 
+
+\begin{equation}
+    \frac{\partial z}{\partial t} = - v A(x)^m \left(\frac{\partial z}{\partial x} \right)^n,
+    \label{eq:SPL}
+\end{equation}
+
+The results of using this equation are shown in Table \ref{tab:table}. 
 
 \begin{table}[H]
  \caption{Sample table title}
@@ -194,28 +183,45 @@ See awesome Table \ref{tab:table}.
   \label{tab:table}
 \end{table}
 
-\subsection{Lists}
-\begin{itemize}
-\item Lorem ipsum dolor sit amet
-\item consectetur adipiscing elit. 
-\item Aliquam dignissim blandit est, in dictum tortor gravida eget. In ac rutrum magna.
-\end{itemize}
+\section{Conclusions}
 
-%%%%%%%%%%%% Supplementary Methods %%%%%%%%%%%%
-%\footnotesize
-%\section*{Methods}
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna.
+
+%%%%%%%%%%%%% Data and code availability %%%%%%%%%%%%%
+\footnotesize
+\section*{Data and Code Availability}
+Code and data is available at \url{github.com/URL_goes_here}. 
 
 %%%%%%%%%%%%% Acknowledgements %%%%%%%%%%%%%
-%\footnotesize
-%\section*{Acknowledgements}
+\footnotesize
+\section*{Acknowledgements}
+The authors are extremely grateful to many people.
+
 
 %%%%%%%%%%%%%%   Bibliography   %%%%%%%%%%%%%%
 \normalsize
-\bibliography{references}
+
+\begin{refcontext}[sorting=nyt]
+\printbibliography
+\end{refcontext}
 
 %%%%%%%%%%%%  Supplementary Figures  %%%%%%%%%%%%
-%\clearpage
+\clearpage 
+
+\section*{Supporting Information}
+
+The supporting information is very important and not an attempt to hide the methods away from scrutiny. 
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum.
+
+Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut purus elit, vestibulum ut, placerat ac, adipiscing vitae, felis. Curabitur dictum gravida mauris. Nam arcu libero, nonummy eget, consectetuer id, vulputate a, magna. Donec vehicula augue eu neque. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Mauris ut leo. Cras viverra metus rhoncus sem. Nulla et lectus vestibulum urna fringilla ultrices. Phasellus eu tellus sit amet tortor gravida placerat. Integer sapien est, iaculis in, pretium quis, viverra ac, nunc. Praesent eget sem vel leo ultrices bibendum.
+
+\begin{suppfigure*}
+  \includegraphics[scale=0.5]{duck2.jpg}
+  \centering
+  \caption{Supplementary duck}
+  \label{fig:SI_1}
+\end{suppfigure*}
 
 %%%%%%%%%%%%%%%%   End   %%%%%%%%%%%%%%%%
-%\end{multicols}  % Method B for two-column formatting (doesn't play well with line numbers), comment out if using method A
 \end{document}

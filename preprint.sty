@@ -1,13 +1,5 @@
 \NeedsTeXFormat{LaTeX2e}
 
-%% declare nonatbib option, which does not load natbib in case of
-%% package clash (users can pass options to natbib via
-%% \PassOptionsToPackage)
-%\newif\if@natbib\@natbibtrue
-%\DeclareOption{nonatbib}{
-%  \@natbibfalse
-%}
-
 \ProcessOptions\relax
 
 % Use roman fonts for equations if available
@@ -24,10 +16,6 @@
 \renewcommand{\rmdefault}{ptm}
 \renewcommand{\sfdefault}{phv}
 
-%% Load natbib unless told otherwise
-%\if@natbib
-%  \RequirePackage{natbib}
-%\fi
 
 % Define page geometry
 \RequirePackage[verbose=true,letterpaper]{geometry}
@@ -36,9 +24,9 @@
     textheight=9.3in,
     textwidth=7.1in,
     top=0.96in,
-    headheight=0.15in,
+    headheight=22.17pt,
     headsep=0.14in,
-    footskip=0in
+    footskip=3.61pt
   }
 }
 
@@ -70,7 +58,7 @@
 \pagestyle{fancy}
 \renewcommand{\headrulewidth}{0pt}
 \fancyheadoffset{0pt}
-\lhead{\scshape Preprint -- \@title}
+\lhead{\scshape Preprint -- \@title} % Replace manual title with \@title but if title is too long it can overrun line
 \rhead{\thepage}
 %\rfoot{\thepage}
 
@@ -243,7 +231,7 @@
     \centering
     {\LARGE\sc \@title\par}
     \vskip 0.1in
-    \textsc{Preprint, compiled \today}\\
+    \textsc{Submitted, non-peer reviewed manuscript, compiled \today}\\
     \def\And{%
       \end{tabular}\hfil\linebreak[0]\hfil%
       \begin{tabular}[t]{c}\bf\rule{\z@}{24\p@}\ignorespaces%
@@ -278,4 +266,16 @@
   \end{quote}
 }
 
+
+% plain language environment styling
+
+\newenvironment{plainlang}
+{
+  \centerline
+  {\large \bfseries \scshape Plain Language Summary}
+  \begin{quote}
+}
+{
+  \end{quote}
+}
 \endinput
