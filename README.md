@@ -1,7 +1,3 @@
-
 # preprint-template.tex
-An information-dense, two-column LaTeX template designed for, e.g., [EarthArXiv](https://eartharxiv.org) preprints. Some compiled examples can be seen [here](https://eartharxiv.org/discover?q=brenhin).
 
-This repository is forked and somewhat heavily modified from https://github.com/kourgeorge/arxiv-style. 
-
-The default version of preprint-template.tex optionally uses [arara](https://github.com/cereda/arara) directives to automate compilation. Arara is probably already included in your TeX distribution (TeX Live or MiKTeX). To use arara with [TexShop](https://pages.uoregon.edu/koch/texshop/), move `arara.engine` from `~/Library/TeXShop/Engines/Inactive/Arara` to `~/Library/TeXShop/Engines`. To make this the default, you can also set `Preferences`>`Typesetting`>`Command Listed Below`>`arara`.
+An information-dense, two-column LaTeX template designed for, e.g., [EarthArXiv](https://eartharxiv.org) preprints. This forks and slightly modifies Brenhin Keller's version of the template: github.com/brenhinkeller/preprint-template.tex. The modifications are minor but include a 'Plain Language Summary' environment and an updated referencing system using `BibLaTex` not `natbib`. An example of a compiled version is shown [here](https://eartharxiv.org/mf3s5).
