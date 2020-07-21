@@ -22,6 +22,12 @@
 
 \usepackage[version=4]{mhchem}
 %% Bibliography options
+
+%% natbib <-> biblatex command conversions: 
+% \citep <-> \parencite : (Smith et al. 1995)
+% \citet <-> \textcite .... Smith et al. (1995) ...
+% \citealp <-> \cite [bare ]  ... Smith et al. 1995 ...
+
 \usepackage[style=authoryear-comp,maxcitenames=1,uniquename=false,giveninits=true,uniquelist=false,maxbibnames=99,sortcites=true,sorting=ynt,doi=true,isbn=false,url=false,hyperref=true,date=year]{biblatex}
 % Removes default behaviour s.t. Articles do not include "in" within bibliography
 \renewbibmacro{in:}{
